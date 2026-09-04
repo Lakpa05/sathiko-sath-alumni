@@ -1,0 +1,13 @@
+<template>
+<section class="bg-gradient-to-br from-emerald-950 via-emerald-800 to-teal-700 text-white">
+<div class="mx-auto grid max-w-7xl gap-12 px-5 py-24 md:grid-cols-2 md:items-center">
+<div><span class="rounded-full bg-white/10 px-4 py-2 text-sm">SathiKo Sath Alumni Community</span><h1 class="mt-6 text-5xl font-black tracking-tight md:text-6xl">Together, our memories become our future.</h1><p class="mt-6 max-w-xl text-lg text-emerald-50">Reconnect with friends, celebrate achievements, discover opportunities and keep the SathiKo Sath family connected.</p><div class="mt-8 flex flex-wrap gap-3"><RouterLink to="/join" class="rounded-xl bg-white px-6 py-3 font-bold text-emerald-900">Join Alumni</RouterLink><RouterLink to="/alumni" class="rounded-xl border border-white/30 px-6 py-3 font-bold">Find Alumni</RouterLink></div></div>
+<div class="rounded-3xl bg-white/10 p-8 ring-1 ring-white/20"><div class="grid grid-cols-2 gap-4"><div v-for="x in stats" :key="x.label" class="rounded-2xl bg-white/10 p-6"><div class="text-3xl font-black">{{x.value}}</div><div class="mt-1 text-sm text-emerald-100">{{x.label}}</div></div></div></div>
+</div></section>
+<section class="mx-auto max-w-7xl px-5 py-20"><div class="max-w-2xl"><p class="font-semibold text-emerald-700">OUR COMMUNITY</p><h2 class="mt-2 text-4xl font-black">Stay connected wherever life takes you.</h2></div><div class="mt-10 grid gap-6 md:grid-cols-3"><div v-for="card in cards" :key="card.title" class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-slate-200"><div class="text-3xl">{{card.icon}}</div><h3 class="mt-5 text-xl font-bold">{{card.title}}</h3><p class="mt-2 text-slate-600">{{card.text}}</p></div></div></section>
+<section class="mx-auto max-w-7xl px-5 pb-20"><div class="rounded-3xl bg-emerald-50 p-10 text-center"><h2 class="text-3xl font-black">Join our Alumni WhatsApp Group</h2><p class="mx-auto mt-3 max-w-xl text-slate-600">Scan the QR code shared by the association and become part of our connected alumni community.</p><div class="mx-auto mt-7 grid h-40 w-40 place-items-center rounded-2xl bg-white text-5xl shadow-sm">QR</div></div></section>
+</template>
+<script setup>
+const stats=[{value:'1,000+',label:'Alumni'},{value:'20+',label:'Batches'},{value:'10+',label:'Countries'},{value:'50+',label:'Activities'}];
+const cards=[{icon:'🤝',title:'Reconnect',text:'Find old friends and build meaningful connections.'},{icon:'🌟',title:'Celebrate',text:'Share alumni achievements and inspiring stories.'},{icon:'❤️',title:'Give Back',text:'Support community activities and future generations.'}];
+</script>

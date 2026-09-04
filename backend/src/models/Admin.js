@@ -1,0 +1,8 @@
+import mongoose from 'mongoose';
+const schema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, unique: true, required: true, lowercase: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['admin', 'superadmin'], default: 'admin' }
+}, { timestamps: true });
+export default mongoose.model('Admin', schema);
