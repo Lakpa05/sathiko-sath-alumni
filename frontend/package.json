@@ -3,17 +3,22 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": {"dev":"vite","build":"vite build","preview":"vite preview"},
-  "dependencies": {
-    "@vitejs/plugin-vue":"latest",
-    "axios":"latest",
-    "lucide-vue-next":"latest",
-    "pinia":"latest",
-    "tailwindcss":"latest",
-    "@tailwindcss/vite":"latest",
-    "vite":"latest",
-    "vue":"latest",
-    "vue-router":"latest"
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "axios": "latest",
+    "lucide-vue-next": "latest",
+    "pinia": "latest",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "@vitejs/plugin-vue": "latest",
+    "tailwindcss": "latest",
+    "vite": "latest"
+  }
 }
