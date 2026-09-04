@@ -1,6 +1,6 @@
 <template><section class="grid min-h-[75vh] place-items-center px-5"><form @submit.prevent="login" class="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg ring-1 ring-slate-200"><h1 class="text-3xl font-black">Admin Login</h1><p class="mt-2 text-slate-500">SathiKo Sath Alumni Dashboard</p><label class="mt-7 block">Email<input v-model="email" type="email" required></label><label class="mt-4 block">Password<input v-model="password" type="password" required></label><p v-if="error" class="mt-4 text-sm text-red-600">{{error}}</p><button class="mt-6 w-full rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">Login</button></form></section></template>
 <script setup>
-import {ref} from 'vue';import axios from 'axios';import {useRouter} from 'vue-router';const router=useRouter();const email=ref(''),password=ref(''),error=ref('');
-async function login(){try{const {data}=await axios.post('/api/auth/login',{email:email.value,password:password.value});localStorage.setItem('token',data.token);router.push('/admin')}catch(e){error.value=e.response?.data?.message||'Login failed'}}
+import {ref} from 'vue';import api from '../../api';import {useRouter} from 'vue-router';const router=useRouter();const email=ref(''),password=ref(''),error=ref('');
+async function login(){try{const {data}=await api.post('/auth/login',{email:email.value,password:password.value});localStorage.setItem('token',data.token);router.push('/admin')}catch(e){error.value=e.response?.data?.message||'Login failed'}}
 </script>
 <style scoped>input{margin-top:.45rem;width:100%;border:1px solid #cbd5e1;border-radius:.75rem;padding:.75rem}</style>

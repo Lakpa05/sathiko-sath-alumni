@@ -22,6 +22,10 @@ app.get('/', (req, res) => res.json({
   message: 'SathiKo Sath Alumni API is running',
   health: '/api/health'
 }));
+app.get('/api', (req, res) => res.json({
+  message: 'SathiKo Sath Alumni API is running',
+  health: '/api/health'
+}));
 app.get('/api/health', (req, res) => res.json({ ok: true, service: 'SathiKo Sath Alumni API' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/alumni', alumniRoutes);

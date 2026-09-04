@@ -1,7 +1,7 @@
 <template><section class="mx-auto max-w-7xl px-5 py-16"><div class="flex flex-col justify-between gap-4 md:flex-row md:items-end"><div><p class="font-semibold text-emerald-700">ALUMNI DIRECTORY</p><h1 class="mt-2 text-4xl font-black">Find your alumni</h1></div><input v-model="search" @input="load" placeholder="Search name or profession..." class="w-full rounded-xl border px-4 py-3 md:w-80"/></div><div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"><article v-for="a in alumni" :key="a._id" class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200"><div class="grid h-24 w-24 place-items-center rounded-full bg-emerald-100 text-3xl font-bold text-emerald-800">{{a.firstName?.[0]}}</div><h3 class="mt-4 font-bold">{{a.firstName}} {{a.lastName}}</h3><p class="text-sm text-slate-500">{{a.profession || 'Alumni'}} · {{a.batch || '—'}}</p><p v-if="a.privacy?.showLocation" class="mt-2 text-sm text-slate-600">{{a.city}}, {{a.country}}</p></article></div><p v-if="!alumni.length" class="mt-12 text-center text-slate-500">No alumni found.</p></section></template>
 <script setup>
-import {ref,onMounted} from 'vue'; import axios from 'axios';
+import {ref,onMounted} from 'vue'; import api from '../api';
 const alumni=ref([]),search=ref('');
-async function load(){const {data}=await axios.get('/api/alumni',{params:{search:search.value}});alumni.value=data}
+async function load(){const {data}=await api.get('/alumni',{params:{search:search.value}});alumni.value=data}
 onMounted(load)
 </script>
