@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Alumni from '../models/Alumni.js';
 import { auth, adminOnly } from '../middleware/auth.js';
 
+
 const router = Router();
 
 router.get('/', async (req,res,next) => {
