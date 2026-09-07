@@ -7,14 +7,18 @@
             </p>
         </div>
         <form @submit.prevent="submit" class="mt-10 space-y-5 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-            <div class="grid gap-5 md:grid-cols-2"><label>First Name<input v-model="form.firstName"
+                <div class="grid gap-5 md:grid-cols-2"><label>First Name<input v-model="form.firstName"
                         required></label><label>Last Name<input v-model="form.lastName"></label><label>Email<input
                         type="email" v-model="form.email"></label><label>Phone<input
                         v-model="form.phone"></label><label>Batch / Year<input
                         v-model="form.batch"></label><label>Profession<input
                         v-model="form.profession"></label><label>Organization<input
                         v-model="form.organization"></label><label>Country<input
-                        v-model="form.country"></label><label>City<input v-model="form.city"></label></div><label>Short
+                v-model="form.country"></label><label>City<input v-model="form.city"></label></div>
+                <label>Profile Photo<input type="file" accept="image/jpeg,image/png,image/webp" @change="selectPhoto"></label>
+                <img v-if="photoPreview" :src="photoPreview" alt="Profile preview" class="h-24 w-24 rounded-full object-cover ring-2 ring-emerald-100">
+                <p class="text-xs font-normal text-slate-500">Use a JPG, PNG, or WebP image up to 1.5 MB.</p>
+                <label>Short
                 Bio<textarea v-model="form.bio" rows="4"></textarea></label><label
                 class="flex items-center gap-2"><input type="checkbox" v-model="form.privacy.showLocation"> Show my
                 location in the public directory</label>
@@ -33,9 +37,23 @@
 </template>
 <script setup>
 import { reactive, ref } from 'vue'; import api from '../api';
-const sent = ref(false); const form = reactive({ privacy: { showLocation: true } });
+const sent = ref(false); const photoPreview = ref(''); const form = reactive({ privacy: { showLocation: true } });
 const error = ref("");
 const loading = ref(false);
+
+function selectPhoto(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) {
+    error.value = 'Profile photo must be smaller than 1.5 MB.';
+    event.target.value = '';
+    return;
+  }
+  error.value = '';
+  const reader = new FileReader();
+  reader.onload = () => { form.photo = reader.result; photoPreview.value = reader.result; };
+  reader.readAsDataURL(file);
+}
 
 async function submit() {
   error.value = "";
