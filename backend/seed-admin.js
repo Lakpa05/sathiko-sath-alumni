@@ -7,29 +7,22 @@ dotenv.config();
 
 const seedAdmin = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
 
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'admin@example.com' });
-    if (existingAdmin) {
-      console.log('Admin already exists');
-      process.exit(0);
-    }
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    const name = process.env.ADMIN_NAME || 'Admin User';
+    if (!email || !password) throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD are required');
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash('admin123', 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const admin = await Admin.findOneAndUpdate(
+      { email },
+      { name, email, password: hashedPassword, role: 'superadmin' },
+      { new: true, upsert: true, runValidators: true }
+    );
 
-    // Create admin
-    const admin = await Admin.create({
-      name: 'Admin User',
-      email: 'admin@example.com',
-      password: hashedPassword,
-      role: 'superadmin'
-    });
-
-    console.log('✓ Admin created successfully');
+    console.log('Admin account is ready');
     console.log(`  Email: ${admin.email}`);
     console.log(`  Name: ${admin.name}`);
     console.log(`  Role: ${admin.role}`);
