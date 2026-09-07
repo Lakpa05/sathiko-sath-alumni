@@ -12,7 +12,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'; import api from '../../api'; import { useRouter } from 'vue-router'; const router = useRouter(); const email = ref(''), password = ref(''), error = ref('');
-async function login() { try { const { data } = await api.post('/api/auth/login', { email: email.value, password: password.value }); localStorage.setItem('token', data.token); router.push('/admin') } catch (e) { error.value = e.response?.data?.message || 'Login failed' } }
+async function login() { try { const { data } = await api.post('/auth/login', { email: email.value, password: password.value }); localStorage.setItem('token', data.token); router.push('/admin') } catch (e) { error.value = e.response?.data?.message || 'Login failed' } }
 </script>
 <style scoped>
 input {

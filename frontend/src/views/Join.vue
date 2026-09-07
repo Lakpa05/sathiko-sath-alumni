@@ -42,7 +42,7 @@ async function submit() {
   loading.value = true;
 
   try {
-    await api.post("/api/alumni", form);
+    await api.post("/alumni", form);
     sent.value = true;
   } catch (e) {
     console.error(e);
