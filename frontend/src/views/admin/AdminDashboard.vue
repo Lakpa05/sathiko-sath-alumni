@@ -18,8 +18,13 @@
                     Alumni →</b>
                 <p class="mt-2 text-emerald-50">Approve registrations, edit profiles and manage directory members.</p>
             </RouterLink>
-            <div class="rounded-2xl bg-white p-7 ring-1 ring-slate-200"><b class="text-xl">Next modules</b>
-                <p class="mt-2 text-slate-600">Events, news, gallery, stories, messages and website settings.</p>
+            <div class="rounded-2xl bg-white p-7 ring-1 ring-slate-200">
+                <b class="text-xl">Content</b>
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <RouterLink to="/admin/events" class="rounded-xl bg-emerald-50 px-4 py-2 font-semibold text-emerald-800">Manage Events</RouterLink>
+                    <RouterLink to="/admin/news" class="rounded-xl bg-emerald-50 px-4 py-2 font-semibold text-emerald-800">Manage News</RouterLink>
+                </div>
+                <p class="mt-4 text-sm text-slate-500">Gallery, stories, messages and website settings are planned next.</p>
             </div>
         </div>
     </section>

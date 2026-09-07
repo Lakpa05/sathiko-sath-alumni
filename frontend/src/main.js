@@ -10,10 +10,12 @@ import Events from './views/Events.vue';
 import AdminLogin from './views/admin/AdminLogin.vue';
 import AdminDashboard from './views/admin/AdminDashboard.vue';
 import AdminAlumni from './views/admin/AdminAlumni.vue';
+import AdminEvents from './views/admin/AdminEvents.vue';
+import AdminNews from './views/admin/AdminNews.vue';
 
 const routes=[
  {path:'/',component:Home},{path:'/alumni',component:Alumni},{path:'/join',component:Join},{path:'/events',component:Events},
- {path:'/admin/login',component:AdminLogin},{path:'/admin',component:AdminDashboard},{path:'/admin/alumni',component:AdminAlumni}
+ {path:'/admin/login',component:AdminLogin},{path:'/admin',component:AdminDashboard},{path:'/admin/alumni',component:AdminAlumni},{path:'/admin/events',component:AdminEvents},{path:'/admin/news',component:AdminNews}
 ];
 const router=createRouter({history:createWebHistory(),routes});
 createApp(App).use(createPinia()).use(router).mount('#app');
