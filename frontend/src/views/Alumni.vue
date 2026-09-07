@@ -7,12 +7,12 @@
             </div><input v-model="search" @input="load" placeholder="Search name or profession..."
                 class="w-full rounded-xl border px-4 py-3 md:w-80" />
         </div>
-        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <article v-for="a in alumni" :key="a._id" class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <div class="mt-10 flex flex-wrap justify-center gap-5">
+            <article v-for="a in alumni" :key="a._id" class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
                 <img v-if="a.photo" :src="a.photo" :alt="`${a.firstName} profile`"
-                    class="h-24 w-24 rounded-full object-cover ring-2 ring-emerald-100">
+                    class="mx-auto h-24 w-24 rounded-full object-cover ring-2 ring-emerald-100">
                 <div v-else
-                    class="grid h-24 w-24 place-items-center rounded-full bg-emerald-100 text-3xl font-bold text-emerald-800">
+                    class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-emerald-100 text-3xl font-bold text-emerald-800">
                     {{ a.firstName?.[0] }}</div>
                 <h3 class="mt-4 font-bold">{{ a.firstName }} {{ a.lastName }}</h3>
                 <p class="text-sm text-slate-500">{{ a.profession || 'Alumni' }} · {{ a.batch || '—' }}</p>
