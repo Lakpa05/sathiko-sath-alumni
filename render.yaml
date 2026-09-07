@@ -1,15 +1,28 @@
-services:
-  - type: web
-    name: sathiko-alumni-api
-    runtime: node
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: npm start
-    healthCheckPath: /api/health
-    envVars:
-      - key: MONGODB_URI
+# Exported from Render on 2026-09-07T08:36:43Z
+version: "1"
+projects:
+- name: sathiko_sath_alumni
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: sathiko-alumni
+      runtime: node
+      repo: https://github.com/Lakpa05/sathiko-sath-alumni
+      plan: free
+      envVars:
+      - key: VITE_API_URL
+        sync: false
+      - key: CLIENT_URL
         sync: false
       - key: JWT_SECRET
         sync: false
-      - key: CLIENT_URL
-        value: https://ssnalumni.netlify.app
+      - key: MONGODB_URI
+        sync: false
+      - key: PORT
+        sync: false
+      region: ohio
+      buildCommand: npm install
+      startCommand: npm start
+      autoDeployTrigger: commit
+      rootDir: backend
