@@ -34,19 +34,7 @@
                                 {{ isExpanded(`${a._id}-bio`) ? 'Show less' : 'Read more' }}
                             </button>
                         </td>
-                        <td class="max-w-xs whitespace-normal p-4">
-                            <span>{{ textPreview(socialLinks(a), `${a._id}-social`) }}</span>
-                            <button v-if="hasMore(socialLinks(a))" @click="toggleText(`${a._id}-social`)" class="ml-2 font-semibold text-emerald-700">
-                                {{ isExpanded(`${a._id}-social`) ? 'Show less' : 'Read more' }}
-                            </button>
-                        </td>
-                        <td class="max-w-xs whitespace-normal p-4">
-                            <span>{{ textPreview(privacyDetails(a), `${a._id}-privacy`) }}</span>
-                            <button v-if="hasMore(privacyDetails(a))" @click="toggleText(`${a._id}-privacy`)" class="ml-2 font-semibold text-emerald-700">
-                                {{ isExpanded(`${a._id}-privacy`) ? 'Show less' : 'Read more' }}
-                            </button>
-                        </td>
-                        <td class="p-4"><span class="rounded-full bg-slate-100 px-3 py-1">{{ a.status }}</span></td>
+                       <td class="p-4"><span class="rounded-full bg-slate-100 px-3 py-1">{{ a.status }}</span></td>
                         <td class="p-4">{{ formatDate(a.createdAt) }}</td>
                         <td class="p-4"><div class="flex justify-center gap-3 whitespace-nowrap">
                             <button v-if="a.status !== 'approved'" @click="changeStatus(a._id, 'approved')" class="font-bold text-emerald-700">Approve</button>
