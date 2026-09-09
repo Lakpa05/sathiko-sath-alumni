@@ -28,9 +28,24 @@
                         <td class="p-4">{{ display(a.profession) }}</td>
                         <td class="p-4">{{ display(a.organization) }}</td>
                         <td class="p-4">{{ display(a.city) }}, {{ display(a.country) }}</td>
-                        <td class="max-w-xs whitespace-normal p-4">{{ display(a.bio) }}</td>
-                        <td class="p-4">{{ socialLinks(a) }}</td>
-                        <td class="p-4">{{ privacyDetails(a) }}</td>
+                        <td class="max-w-xs whitespace-normal p-4">
+                            <span>{{ textPreview(a.bio, `${a._id}-bio`) }}</span>
+                            <button v-if="hasMore(a.bio)" @click="toggleText(`${a._id}-bio`)" class="ml-2 font-semibold text-emerald-700">
+                                {{ isExpanded(`${a._id}-bio`) ? 'Show less' : 'Read more' }}
+                            </button>
+                        </td>
+                        <td class="max-w-xs whitespace-normal p-4">
+                            <span>{{ textPreview(socialLinks(a), `${a._id}-social`) }}</span>
+                            <button v-if="hasMore(socialLinks(a))" @click="toggleText(`${a._id}-social`)" class="ml-2 font-semibold text-emerald-700">
+                                {{ isExpanded(`${a._id}-social`) ? 'Show less' : 'Read more' }}
+                            </button>
+                        </td>
+                        <td class="max-w-xs whitespace-normal p-4">
+                            <span>{{ textPreview(privacyDetails(a), `${a._id}-privacy`) }}</span>
+                            <button v-if="hasMore(privacyDetails(a))" @click="toggleText(`${a._id}-privacy`)" class="ml-2 font-semibold text-emerald-700">
+                                {{ isExpanded(`${a._id}-privacy`) ? 'Show less' : 'Read more' }}
+                            </button>
+                        </td>
                         <td class="p-4"><span class="rounded-full bg-slate-100 px-3 py-1">{{ a.status }}</span></td>
                         <td class="p-4">{{ formatDate(a.createdAt) }}</td>
                         <td class="p-4"><div class="flex justify-center gap-3 whitespace-nowrap">
@@ -49,14 +64,27 @@
 import { ref, onMounted } from 'vue';
 import api from '../../api';
 import { useRouter } from 'vue-router';
+import * as XLSX from 'xlsx';
 
 const router = useRouter();
 const alumni = ref([]);
+const expandedText = ref(new Set());
 const headings = ['Name', 'Photo', 'Email', 'Phone', 'Batch', 'Profession', 'Organization', 'Location', 'Bio', 'Social Links', 'Privacy', 'Status', 'Registered', 'Action'];
 const config = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
 
 function display(value) { return value || '—'; }
 function formatDate(value) { return value ? new Date(value).toLocaleString() : '—'; }
+function hasMore(value) { return Boolean(value && value.length > 90); }
+function isExpanded(key) { return expandedText.value.has(key); }
+function toggleText(key) {
+    const next = new Set(expandedText.value);
+    next.has(key) ? next.delete(key) : next.add(key);
+    expandedText.value = next;
+}
+function textPreview(value, key) {
+    const text = display(value);
+    return !isExpanded(key) && text.length > 90 ? `${text.slice(0, 90)}…` : text;
+}
 function socialLinks(alumnus) {
     return Object.entries(alumnus.socialLinks || {}).filter(([, value]) => value).map(([key, value]) => `${key}: ${value}`).join(' | ') || '—';
 }
@@ -75,17 +103,14 @@ async function changeStatus(id, status) {
 async function remove(id) {
     if (confirm('Delete this alumni?')) { await api.delete(`/alumni/${id}`, config()); await load(); }
 }
-function csvValue(value) { return `"${String(value ?? '').replaceAll('"', '""')}"`; }
 function exportAlumni() {
     const columns = ['First Name', 'Last Name', 'Photo URL', 'Email', 'Phone', 'Batch', 'Profession', 'Organization', 'City', 'Country', 'Bio', 'Facebook', 'LinkedIn', 'Instagram', 'Email Visible', 'Phone Visible', 'Location Visible', 'Status', 'Registered At'];
-    const rows = alumni.value.map((a) => [a.firstName, a.lastName, a.photo, a.email, a.phone, a.batch, a.profession, a.organization, a.city, a.country, a.bio, a.socialLinks?.facebook, a.socialLinks?.linkedin, a.socialLinks?.instagram, a.privacy?.showEmail, a.privacy?.showPhone, a.privacy?.showLocation, a.status, a.createdAt].map(csvValue));
-    const csv = [columns.map(csvValue), ...rows].map((row) => row.join(',')).join('\r\n');
-    const url = URL.createObjectURL(new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' }));
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `alumni-${new Date().toISOString().slice(0, 10)}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
+    const rows = alumni.value.map((a) => [a.firstName, a.lastName, a.photo, a.email, a.phone, a.batch, a.profession, a.organization, a.city, a.country, a.bio, a.socialLinks?.facebook, a.socialLinks?.linkedin, a.socialLinks?.instagram, a.privacy?.showEmail ? 'Yes' : 'No', a.privacy?.showPhone ? 'Yes' : 'No', a.privacy?.showLocation ? 'Yes' : 'No', a.status, formatDate(a.createdAt)]);
+    const worksheet = XLSX.utils.aoa_to_sheet([columns, ...rows]);
+    worksheet['!cols'] = columns.map((column, index) => ({ wch: index === 10 ? 45 : Math.min(Math.max(column.length + 2, 14), 28) }));
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Alumni');
+    XLSX.writeFile(workbook, `alumni-${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 onMounted(load);
 </script>
