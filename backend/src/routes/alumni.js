@@ -26,7 +26,10 @@ router.get('/admin/all', auth, adminOnly, async (req,res,next)=>{
 });
 
 router.patch('/:id/status', auth, adminOnly, async (req,res,next)=>{
-  try { res.json(await Alumni.findByIdAndUpdate(req.params.id,{status:req.body.status},{new:true})); } catch(e){next(e)}
+  try {
+    if (!['pending', 'approved', 'rejected', 'inactive'].includes(req.body.status)) return res.status(400).json({message:'Invalid alumni status'});
+    res.json(await Alumni.findByIdAndUpdate(req.params.id,{status:req.body.status},{new:true,runValidators:true}));
+  } catch(e){next(e)}
 });
 
 router.put('/:id', auth, adminOnly, async (req,res,next)=>{
