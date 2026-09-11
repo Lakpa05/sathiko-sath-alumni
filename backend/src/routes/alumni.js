@@ -13,7 +13,11 @@ router.get('/', async (req,res,next) => {
     if (batch) q.batch = batch;
     if (country) q.country = country;
     if (status) q.status = status; else q.status = 'approved';
-    res.json(await Alumni.find(q).sort({createdAt:-1}));
+    res.json(await Alumni.find(q)
+      .select('firstName lastName photo batch profession organization city country privacy.showLocation')
+      .sort({createdAt:-1})
+      .limit(100)
+      .lean());
   } catch(e){next(e)}
 });
 

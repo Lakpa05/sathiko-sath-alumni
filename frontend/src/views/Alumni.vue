@@ -7,7 +7,8 @@
             </div><input v-model="search" @input="load" placeholder="Search name or profession..."
                 class="w-full rounded-xl border px-4 py-3 md:w-80" />
         </div>
-        <div class="mt-10 flex flex-wrap justify-center gap-5">
+        <p v-if="loading" class="mt-10 text-center text-slate-500">Loading alumni...</p>
+        <div v-else class="mt-10 flex flex-wrap justify-center gap-5">
             <article v-for="a in alumni" :key="a._id" class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
                 <img v-if="a.photo" :src="a.photo" :alt="`${a.firstName} profile`"
                     class="mx-auto h-24 w-24 rounded-full object-cover ring-2 ring-emerald-100">
@@ -20,12 +21,31 @@
                 <p v-if="a.privacy?.showLocation" class="mt-2 text-sm text-slate-600">{{ a.city }}, {{ a.country }}</p>
             </article>
         </div>
-        <p v-if="!alumni.length" class="mt-12 text-center text-slate-500">No alumni found.</p>
+        <p v-if="!loading && !alumni.length" class="mt-12 text-center text-slate-500">No alumni found.</p>
     </section>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'; import api from '../api';
-const alumni = ref([]), search = ref('');
-async function load() { const { data } = await api.get('/alumni', { params: { search: search.value } }); alumni.value = data }
+import { ref, onMounted, onBeforeUnmount } from 'vue'; import api from '../api';
+const alumni = ref([]), search = ref(''), loading = ref(false);
+let searchTimer;
+let requestId = 0;
+
+function load() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(fetchAlumni, 300);
+}
+
+async function fetchAlumni() {
+    const currentRequest = ++requestId;
+    loading.value = true;
+    try {
+        const { data } = await api.get('/alumni', { params: { search: search.value } });
+        if (currentRequest === requestId) alumni.value = data;
+    } finally {
+        if (currentRequest === requestId) loading.value = false;
+    }
+}
+
+onBeforeUnmount(() => clearTimeout(searchTimer));
 onMounted(load)
 </script>
