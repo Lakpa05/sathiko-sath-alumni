@@ -15,8 +15,8 @@
                     class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-emerald-100 text-3xl font-bold text-emerald-800">
                     {{ a.firstName?.[0] }}</div>
                 <h3 class="mt-4 font-bold">Name :{{ a.firstName }} {{ a.lastName }}</h3>
-                <p class="text-sm text-slate-500">Profession: {{ a.profession || 'Alumni' }} · {{ a.batch || '—' }}</p>
-                <p class="text-sm text-slate-500">Organization: {{ a.organization || 'Alumni' }} </p>
+                <p class="text-sm text-slate-500"><b>Profession:</b> {{ a.profession || 'Alumni' }} · {{ a.batch || '—' }}</p>
+                <p class="text-sm text-slate-500"><b>Organization:</b> {{ a.organization || 'Alumni' }} </p>
                 <p v-if="a.privacy?.showLocation" class="mt-2 text-sm text-slate-600">{{ a.city }}, {{ a.country }}</p>
             </article>
         </div>
