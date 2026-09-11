@@ -8,10 +8,17 @@
         </div>
         <form @submit.prevent="submit" class="mt-10 space-y-5 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
                 <div class="grid gap-5 md:grid-cols-2"><label>First Name<input v-model="form.firstName"
-                        required></label><label>Last Name<input v-model="form.lastName"></label><label>Email<input
+                        required></label><label>Last Name<input v-model="form.lastName"></label>
+                        <label>Gender<input
+                        v-model="form.gender"></label><label>Email<input
                         type="email" v-model="form.email"></label><label>Phone<input
-                        v-model="form.phone"></label><label>Batch / Year<input
-                        v-model="form.batch"></label><label>Profession<input
+                        v-model="form.phone"></label><label>Batch / Year (BS)<input
+                        v-model="form.batch"
+                        inputmode="numeric"
+                        pattern="[0-9]{4}"
+                        maxlength="4"
+                        title="Enter a four-digit Bikram Sambat year"
+                        placeholder="2081"></label><label>Profession<input
                         v-model="form.profession"></label><label>Organization<input
                         v-model="form.organization"></label><label>Country<input
                 v-model="form.country"></label><label>City<input v-model="form.city"></label></div>

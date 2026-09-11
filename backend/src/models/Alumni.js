@@ -5,7 +5,14 @@ const schema = new mongoose.Schema({
   email: { type: String, lowercase: true, trim: true },
   phone: String,
   photo: String,
-  batch: String,
+  batch: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: value => !value || /^[0-9]{4}$/.test(value),
+      message: 'Batch / Year must be a four-digit Bikram Sambat year'
+    }
+  },
   profession: String,
   organization: String,
   city: String,
