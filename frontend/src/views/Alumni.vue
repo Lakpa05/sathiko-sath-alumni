@@ -16,6 +16,7 @@
                     {{ a.firstName?.[0] }}</div>
                 <h3 class="mt-4 font-bold">{{ a.firstName }} {{ a.lastName }}</h3>
                 <p class="text-sm text-slate-500">{{ a.profession || 'Alumni' }} · {{ a.batch || '—' }}</p>
+                <p class="text-sm text-slate-500">{{ a.organization || 'Alumni' }} </p>
                 <p v-if="a.privacy?.showLocation" class="mt-2 text-sm text-slate-600">{{ a.city }}, {{ a.country }}</p>
             </article>
         </div>
