@@ -45,14 +45,20 @@
                         class="w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"></textarea>
                 </label>
 
+                <label class="block md:col-span-2">
+                    <span class="mb-1 block text-sm font-medium text-slate-600">Image link</span>
+                    <input v-model="form.imageUrl" type="url" placeholder="https://example.com/event-image.jpg"
+                        class="w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100">
+                </label>
+
                 <!-- Photo upload -->
                 <div class="md:col-span-2">
                     <span class="mb-1 block text-sm font-medium text-slate-600">Cover photo</span>
                     <div
                         class="flex items-center gap-4 rounded-xl border-2 border-dashed border-slate-300 p-4 transition hover:border-emerald-400"
                         @dragover.prevent @drop.prevent="onDrop">
-                        <div v-if="preview" class="h-20 w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-                            <img :src="preview" alt="Preview" class="h-full w-full object-cover">
+                        <div v-if="preview || form.imageUrl" class="h-20 w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                            <img :src="preview || form.imageUrl" alt="Preview" class="h-full w-full object-cover">
                         </div>
                         <div v-else class="flex h-20 w-32 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -126,7 +132,7 @@ const submitting = ref(false);
 const preview = ref(null);
 const photoFile = ref(null);
 
-const form = reactive({ title: '', date: '', time: '', venue: '', description: '' });
+const form = reactive({ title: '', date: '', time: '', venue: '', description: '', imageUrl: '' });
 const config = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
 
 async function load() {
@@ -169,7 +175,7 @@ async function createEvent() {
             headers: { ...config().headers, 'Content-Type': 'multipart/form-data' },
         });
 
-        Object.assign(form, { title: '', date: '', time: '', venue: '', description: '' });
+        Object.assign(form, { title: '', date: '', time: '', venue: '', description: '', imageUrl: '' });
         clearPhoto();
         message.value = 'Event added.';
         await load();

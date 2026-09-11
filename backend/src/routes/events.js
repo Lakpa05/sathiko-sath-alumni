@@ -9,14 +9,19 @@ const upload = multer({
 	fileFilter: (req, file, callback) => callback(null, file.mimetype.startsWith('image/'))
 });
 router.get('/', async(req,res,next)=>{try{res.json(await Event.find({status:'published'})
-	.select('title date venue description')
+	.select('title date time venue description image')
 	.sort({date:1})
 	.limit(50)
 	.lean())}catch(e){next(e)}});
 router.post('/',auth,adminOnly,upload.single('image'),async(req,res,next)=>{
 	try {
 		const eventData = { ...req.body };
-		if (req.file) eventData.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+		if (req.file) {
+			eventData.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+		} else if (eventData.imageUrl) {
+			eventData.image = eventData.imageUrl.trim();
+		}
+		delete eventData.imageUrl;
 		res.status(201).json(await Event.create(eventData));
 	} catch(e) { next(e); }
 });
